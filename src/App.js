@@ -91,6 +91,9 @@ class App extends Component {
         <div className="sideA">
           <PlayerList {...this.state.teamA} />
         </div>
+        <div className="scoreA score">94</div>
+        <div className="divider score">-</div>
+        <div className="scoreB score">86</div>
         <div className="clock"></div>
         <div className="sideB">
           <PlayerList {...this.state.teamB} />

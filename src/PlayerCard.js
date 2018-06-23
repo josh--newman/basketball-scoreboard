@@ -7,9 +7,9 @@ const PlayerCard = (props) => {
         <img src={props.img} />
       </div>
       <div className="details">
-        <h3>{props.name}</h3>
-        <hr/>
-        <p>{props.position} #{props.number}</p>
+        <span className="name">{props.name}</span>
+        <span className="position">{props.position}</span>
+        <span className="number">#{props.number}</span>
       </div>
     </div>
   );

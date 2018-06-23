@@ -1,22 +1,67 @@
-.App {
-  text-align: center;
-  display: flex;
-  max-width: 100%;
+body {
+  padding: 0;
+  margin: 0;
 }
 
-.sideA .sideB {
-  flex: 0 1 20%;
+.App {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+  grid-template-rows: 100px 1fr;
+  grid-template-areas:
+    "sideA scoreA divider scoreB sideB"
+    "sideA clock clock clock sideB"
+  /* max-width: 100%; */
+}
+
+.sideA {
+  grid-area: sideA;
+}
+
+.sideB {
+  grid-area: sideB;
+}
+
+.scoreA {
+  grid-area: scoreA;
+}
+
+.divider {
+  grid-area: divider;
+}
+
+.scoreB {
+  grid-area: scoreB;
+}
+
+.score {
+  align-self: center;
+  justify-self: center;
+  font-size: 100px;
 }
 
 .clock {
-  flex: 0 1 60%;
-  width: 100%;
+  grid-area: clock;
 }
 
 .playerList {
   background-color: lightgray;
-  width: 300px;
   padding: 0 10px;
+  height: 100vh;
+}
+
+.logo {
+  display: inline-block;
+}
+
+.playerList .header {
+  display: flex;
+  align-items: center;
+  min-height: 100px;
+}
+
+.playerList h1 {
+  margin: 0;
+  display: inline-block;
 }
 
 .playerList ul {
@@ -24,34 +69,41 @@
   padding: 0;
 }
 
-.playerList .logo {
-  height: 150px;
-}
-
 .playerList img {
-  width: 150px;
-  /* height: 500px; */
+  width: 75px;
+  margin-right: 10px;
 }
 
 .playerCard {
   display: flex;
-  /* width: 30%; */
   align-content: center;
   background-color: lightblue;
   margin: 5px;
+  align-items: center;
 }
 
 .playerCard .photo {
-  width: 30%;
   margin: 5px;
 }
 
 .playerCard .photo img {
-  width: 100%;
   vertical-align: middle;
   padding-top: 10px;
 }
 
-.playerCard .details {
-  width: 70%;
+.playerCard .details span {
+  margin: 0 10px;
+}
+
+.playerCard .name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.playerCard .position {
+  background-color: greenyellow;
+}
+
+.playerCard .number {
+  font-weight: bold;
 }

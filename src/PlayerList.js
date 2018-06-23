@@ -4,9 +4,9 @@ import PlayerCard from './PlayerCard';
 const PlayerList = (props) => {
   return (
     <div className="playerList">
-      <h1>{props.name}</h1>
-      <div className="logo">
+      <div className="header">
         <img src={props.logo} />
+        <h1>{props.name}</h1>
       </div>
       <div className="details">
         <ul>
