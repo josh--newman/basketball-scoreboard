@@ -6,10 +6,12 @@ body {
 .App {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
-  grid-template-rows: 100px 1fr;
+  grid-template-rows: 150px 80px 1fr 1fr;
   grid-template-areas:
     "sideA scoreA divider scoreB sideB"
+    "sideA scoreButtons scoreButtons scoreButtons sideB"
     "sideA clock clock clock sideB"
+    "sideA gameButtons gameButtons gameButtons sideB"
   /* max-width: 100%; */
 }
 
@@ -41,6 +43,33 @@ body {
 
 .clock {
   grid-area: clock;
+  font-size: 120px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.gameButtons {
+  grid-area: gameButtons;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.clock span {
+  margin-top: 50px;
+}
+
+.scoreButtons {
+  grid-area: scoreButtons;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scoreButtons button {
+  margin: 0 10px;
 }
 
 .playerList {
@@ -56,7 +85,7 @@ body {
 .playerList .header {
   display: flex;
   align-items: center;
-  min-height: 100px;
+  min-height: 150px;
 }
 
 .playerList h1 {
@@ -80,15 +109,6 @@ body {
   background-color: lightblue;
   margin: 5px;
   align-items: center;
-}
-
-.playerCard .photo {
-  margin: 5px;
-}
-
-.playerCard .photo img {
-  vertical-align: middle;
-  padding-top: 10px;
 }
 
 .playerCard .details span {

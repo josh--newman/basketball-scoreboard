@@ -12,7 +12,7 @@ const PlayerList = (props) => {
         <ul>
           {props.players.map(player =>
             <li key={player.name}>
-              <PlayerCard {...player} />
+              <PlayerCard onPlayerScore={props.onPlayerScore} {...player} />
             </li>
           )}
         </ul>
