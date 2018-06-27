@@ -9,10 +9,9 @@ const PlayerCard = (props) => {
         <span className="name">{props.name}</span>
         <span className="position">{props.position}</span>
         <span className="number">#{props.number}</span>
-        <button onClick={() => onPlayerScore({ ...player }, 1)}>+1</button>
-        <button onClick={() => onPlayerScore({ ...player }, 2)}>+2</button>
-        <button onClick={() => onPlayerScore({ ...player }, 3)}>+3</button>
-        <button>Foul</button>
+        <button onClick={() => onPlayerScore(player, 1)}>+1</button>
+        <button onClick={() => onPlayerScore(player, 2)}>+2</button>
+        <button onClick={() => onPlayerScore(player, 3)}>+3</button>
       </div>
     </div>
   );
