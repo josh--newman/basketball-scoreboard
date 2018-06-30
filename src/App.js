@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import numeral from 'numeral';
 import './App.css';
 import PlayerList from './PlayerList';
 
@@ -6,10 +7,16 @@ const actionTypes = {
   PLAYER_SCORE: 'PLAYER_SCORE'
 }
 
+const INTERVAL_TYPES = {
+  QUARTER: 'QUARTER',
+  HALF: 'HALF'
+}
+
 const initialState = {
-  intervalType: 'quarter',
+  intervalType: INTERVAL_TYPES.QUARTER,
   currentInterval: 1,
-  gameTimeSecs: 1200,
+  intervalTimeSecs: 1200,
+  secsPerInterval: 1200,
   gameEvents: [],
   clockRunning: false,
   players: {
@@ -88,7 +95,6 @@ const initialState = {
     teamA: {
       name: 'Golden State Warriors',
       logo: 'https://www.featuredcustomers.com/media/Company.logo/Golden_State_Warriors_GgMBJ0u.png',
-      score: 0,
       players: {
         dgreen: true,
         jmcgee: true,
@@ -100,7 +106,6 @@ const initialState = {
     teamB: {
       name: 'Cleveland Cavaliers',
       logo: 'http://www.stickpng.com/assets/images/58419c8da6515b1e0ad75a63.png',
-      score: 0,
       players: {
         jgreen: true,
         klove: true,
@@ -121,6 +126,18 @@ const formatTime = (time) => {
   return `${formattedMinutes}:${formattedSeconds}`;
 }
 
+const formatInterval = (currentInterval, intervalType) => {
+  const formatted = numeral(currentInterval).format('Oo');
+  switch (intervalType) {
+    case INTERVAL_TYPES.QUARTER:
+      return `${formatted} quarter`;
+    case INTERVAL_TYPES.HALF:
+      return `${formatted} half`;
+    default:
+      return '';
+  }
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -131,14 +148,14 @@ class App extends Component {
     this.manageTime = this.manageTime.bind(this);
     this.onPlayerScore = this.onPlayerScore.bind(this);
     this.onPlayerFoul = this.onPlayerFoul.bind(this);
-    this.resetScore = this.resetScore.bind(this);
+    this.resetGame = this.resetGame.bind(this);
   }
 
   resetClock() {
     clearInterval(clockInterval);
     return this.setState({
       gameRunning: false,
-      gameTimeSecs: 1200
+      intervalTimeSecs: 1200
     });
   }
 
@@ -146,7 +163,7 @@ class App extends Component {
     clockInterval = setInterval(() => {
       return this.setState({
         gameRunning: true,
-        gameTimeSecs: this.state.gameTimeSecs - 1
+        intervalTimeSecs: this.state.intervalTimeSecs - 1
       })
     }, 1000)
   }
@@ -159,7 +176,7 @@ class App extends Component {
   }
 
   manageTime(direction, seconds) {
-    let newTime = this.state.gameTimeSecs;
+    let newTime = this.state.intervalTimeSecs;
     if (newTime <= 0 && direction === 'minus') return;
     switch (direction) {
       case 'plus':
@@ -172,7 +189,7 @@ class App extends Component {
         break;
     }
     return this.setState({
-      gameTimeSecs: newTime
+      intervalTimeSecs: newTime
     })
   }
 
@@ -187,31 +204,11 @@ class App extends Component {
       ...this.state.gameEvents,
       scoreEvent
     ]
-    console.log(newEvents);
     return this.setState({ gameEvents: newEvents });
-    // const team = this.state.teams[player.team];
-    // const newTeamState = { ...team, score: team.score + points };
-    // return this.setState({
-    //   teams: {
-    //     ...this.state.teams,
-    //     [player.team]: newTeamState
-    //   }
-    // });
   }
 
-  resetScore() {
-    return this.setState({
-      teams: {
-        teamA: {
-          ...this.state.teams.teamA,
-          score: 0
-        },
-        teamB: {
-          ...this.state.teams.teamB,
-          score: 0
-        }
-      }
-    })
+  resetGame() {
+    return this.setState({ gameEvents: [] });
   }
 
   onPlayerFoul(player) {
@@ -228,12 +225,12 @@ class App extends Component {
       .filter(event => event.type === actionTypes.PLAYER_SCORE)
       .filter(event => event.team === 'teamA')
       .reduce((tally, event) => tally + event.points, 0)
-    
+
     const teamBScore = this.state.gameEvents
       .filter(event => event.type === actionTypes.PLAYER_SCORE)
       .filter(event => event.team === 'teamB')
       .reduce((tally, event) => tally + event.points, 0)
-    
+
     return (
       <div className="App">
         <div className="sideA">
@@ -247,10 +244,13 @@ class App extends Component {
         <div className="divider score">-</div>
         <div className="scoreB score">{teamBScore}</div>
         <div className="scoreButtons">
-          <button onClick={this.resetScore}>Reset score</button>
+          <button onClick={this.resetGame}>Reset</button>
         </div>
         <div className="clock">
-          <span>{formatTime(this.state.gameTimeSecs)}</span>
+          <span>{formatTime(this.state.intervalTimeSecs)}</span>
+        </div>
+        <div className="interval">
+          <span>{formatInterval(this.state.currentInterval, this.state.intervalType)}</span>
         </div>
         <div className="gameButtons">
           <button disabled={this.state.gameRunning} onClick={this.startClock}>Start</button>

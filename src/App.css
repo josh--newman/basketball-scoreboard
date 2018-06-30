@@ -1,11 +1,12 @@
 .App {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
-  grid-template-rows: 150px 80px 1fr 1fr;
+  grid-template-rows: 150px 80px 200px 80px 1fr;
   grid-template-areas:
     "sideA scoreA divider scoreB sideB"
     "sideA scoreButtons scoreButtons scoreButtons sideB"
     "sideA clock clock clock sideB"
+    "sideA interval interval interval sideB"
     "sideA gameButtons gameButtons gameButtons sideB"
   /* max-width: 100%; */
 }
@@ -40,6 +41,13 @@
   grid-area: clock;
   font-size: 120px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.interval {
+  grid-area: interval;
   display: flex;
   justify-content: center;
   align-items: flex-start;
