@@ -8,8 +8,8 @@ const actionTypes = {
 }
 
 const INTERVAL_TYPES = {
-  QUARTER: 'QUARTER',
-  HALF: 'HALF'
+  QUARTER: 'quarter',
+  HALF: 'half'
 }
 
 const initialState = {
@@ -128,14 +128,14 @@ const formatTime = (time) => {
 
 const formatInterval = (currentInterval, intervalType) => {
   const formatted = numeral(currentInterval).format('Oo');
-  switch (intervalType) {
-    case INTERVAL_TYPES.QUARTER:
-      return `${formatted} quarter`;
-    case INTERVAL_TYPES.HALF:
-      return `${formatted} half`;
-    default:
-      return '';
-  }
+  return `${formatted} ${intervalType}`;
+}
+
+const hasAnotherInterval = (intervalType, currentInterval) => {
+  return (
+    (intervalType === INTERVAL_TYPES.QUARTER && currentInterval >= 4) ||
+    (intervalType === INTERVAL_TYPES.HALF && currentInterval >= 2)
+  ) ? false : true;
 }
 
 class App extends Component {
@@ -147,8 +147,8 @@ class App extends Component {
     this.stopClock = this.stopClock.bind(this);
     this.manageTime = this.manageTime.bind(this);
     this.onPlayerScore = this.onPlayerScore.bind(this);
-    this.onPlayerFoul = this.onPlayerFoul.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.startNextInterval = this.startNextInterval.bind(this);
   }
 
   resetClock() {
@@ -208,11 +208,16 @@ class App extends Component {
   }
 
   resetGame() {
-    return this.setState({ gameEvents: [] });
+    return this.setState({ gameEvents: [], currentInterval: 1 });
   }
 
-  onPlayerFoul(player) {
-
+  startNextInterval() {
+    const { intervalType, currentInterval, secsPerInterval } = this.state;
+    return hasAnotherInterval(intervalType, currentInterval) ?
+      this.setState({
+        currentInterval: currentInterval + 1,
+        intervalTimeSecs: secsPerInterval
+      }) : null
   }
 
   render() {
@@ -258,6 +263,11 @@ class App extends Component {
           <button disabled={this.state.gameRunning} onClick={this.resetClock}>Reset Clock</button>
           <button disabled={this.state.gameRunning} onClick={() => this.manageTime('plus', 60)}>+</button>
           <button disabled={this.state.gameRunning} onClick={() => this.manageTime('minus', 60)}>-</button>
+          <button
+            disabled={this.state.gameRunning || !hasAnotherInterval(this.state.intervalType, this.state.currentInterval)}
+            onClick={() => this.startNextInterval()}>
+            Start next {this.state.intervalType}
+          </button>
         </div>
         <div className="sideB">
           <PlayerList
